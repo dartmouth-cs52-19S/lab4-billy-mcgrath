@@ -1,23 +1,13 @@
 import React from 'react';
 import {
-  BrowserRouter as Router, Route, Switch, NavLink,
+  BrowserRouter as Router, Route, Switch,
 } from 'react-router-dom';
 import PostList from './posts';
 import Post from './post';
 import NewPost from './new-post';
+import NavBar from './nav-bar';
 
 import '../style.scss';
-
-const NavBar = () => {
-  return (
-    <nav>
-      <ul>
-        <li><NavLink exact to="/">Billys Blog</NavLink></li>
-        <li><NavLink to="/posts/new">Create Post</NavLink></li>
-      </ul>
-    </nav>
-  );
-};
 
 const App = (props) => {
   return (
