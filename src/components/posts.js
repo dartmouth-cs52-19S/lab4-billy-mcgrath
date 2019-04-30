@@ -25,13 +25,13 @@ class PostList extends Component {
     return (
       this.props.posts.map((post) => {
         return (
-          <NavLink to={`/posts/${post.id}`}>
-            <div className="post-box" key={post.id}>
-              {post.title}
+          <div className="post-box" key={post.id}>
+            <NavLink to={`/posts/${post.id}`}>
               <img src={post.cover_url} alt="Blog Cover" />
-              <p>Tags: {post.tags}</p>
-            </div>
-          </NavLink>
+              <h1 className="post-title">{post.title}</h1>
+              <p className="post-tags">Tags: {post.tags}</p>
+            </NavLink>
+          </div>
         );
       })
     );

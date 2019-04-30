@@ -47,13 +47,16 @@ class NewPost extends Component {
 
   render() {
     return (
-      <form id="note-add">
-        <input id="input-bar" type="text" onChange={this.onTitleChange} placeholder="new post title" value={this.state.title} />
-        <input id="input-bar" type="text" onChange={this.onContentChange} placeholder="new post content" value={this.state.content} />
-        <input id="input-bar" type="text" onChange={this.onTagsChange} placeholder="new post tags" value={this.state.tags} />
-        <input id="input-bar" type="text" onChange={this.onCoverChange} placeholder="new post cover url" value={this.state.cover_url} />
-        <button id="submit-button" type="button" onClick={this.onCreatePost}>Create a post!</button>
-      </form>
+      <div className="new-post">
+        <h1 className="create-post">Create a new post</h1>
+        <form id="note-add">
+          <input id="input-bar" type="text" onChange={this.onTitleChange} placeholder="new post title" value={this.state.title} />
+          <input id="input-bar" type="text" onChange={this.onContentChange} placeholder="new post content" value={this.state.content} />
+          <input id="input-bar" type="text" onChange={this.onTagsChange} placeholder="new post tags" value={this.state.tags} />
+          <input id="input-bar" type="text" onChange={this.onCoverChange} placeholder="new post cover url" value={this.state.cover_url} />
+          <button id="submit-button" type="button" onClick={this.onCreatePost}>Create a post!</button>
+        </form>
+      </div>
     );
   }
 }

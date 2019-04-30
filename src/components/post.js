@@ -29,9 +29,11 @@ class Post extends Component {
     this.renderContent = this.renderContent.bind(this);
     this.renderDelete = this.renderDelete.bind(this);
     this.renderTags = this.renderTags.bind(this);
+    this.renderImage = this.renderImage.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onContentChange = this.onContentChange.bind(this);
     this.onTagsChange = this.onTagsChange.bind(this);
+    this.onImageChange = this.onImageChange.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.onEditClick = this.onEditClick.bind(this);
   }
@@ -45,6 +47,14 @@ class Post extends Component {
       this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
       this.setState({ isEditing: false });
     } else {
+      this.setState({
+        updatedPost: {
+          title: this.props.currentPost.title,
+          content: this.props.currentPost.content,
+          tags: this.props.currentPost.tags,
+          cover_url: this.props.currentPost.cover_url,
+        },
+      });
       this.setState({ isEditing: true });
     }
   }
@@ -57,9 +67,6 @@ class Post extends Component {
     this.setState({
       updatedPost: {
         title: event.target.value,
-        content: this.props.currentPost.content,
-        tags: this.props.currentPost.tags,
-        cover_url: this.props.currentPost.cover_url,
       },
     });
   }
@@ -67,10 +74,7 @@ class Post extends Component {
   onContentChange(event) {
     this.setState({
       updatedPost: {
-        title: this.props.currentPost.title,
         content: event.target.value,
-        tags: this.props.currentPost.tags,
-        cover_url: this.props.currentPost.cover_url,
       },
     });
   }
@@ -78,10 +82,15 @@ class Post extends Component {
   onTagsChange(event) {
     this.setState({
       updatedPost: {
-        title: this.props.currentPost.title,
-        content: this.props.currentPost.content,
         tags: event.target.value,
-        cover_url: this.props.currentPost.cover_url,
+      },
+    });
+  }
+
+  onImageChange(event) {
+    this.setState({
+      updatedPost: {
+        cover_url: event.target.value,
       },
     });
   }
@@ -89,10 +98,7 @@ class Post extends Component {
   renderTitle() {
     if (this.state.isEditing) {
       return (
-        <div className="changing">
-          <p>Title: </p>
-          <input id="title-change" type="text" onChange={this.onTitleChange} value={this.state.updatedPost.title} />
-        </div>
+        <input id="title-change" type="text" onChange={this.onTitleChange} placeholder="update title" value={this.state.updatedPost.title} />
       );
     } else {
       return (
@@ -104,10 +110,7 @@ class Post extends Component {
   renderContent() {
     if (this.state.isEditing) {
       return (
-        <div className="changing">
-          <p>Content: </p>
-          <input id="content-change" type="text" onChange={this.onContentChange} value={this.state.updatedPost.content} />
-        </div>
+        <input id="content-change" type="text" onChange={this.onContentChange} placeholder="update content" value={this.state.updatedPost.content} />
       );
     } else {
       return (
@@ -120,14 +123,23 @@ class Post extends Component {
   renderTags() {
     if (this.state.isEditing) {
       return (
-        <div className="changing">
-          <p>Tags: </p>
-          <input id="tag-change" type="text" onChange={this.onTagsChange} value={this.state.updatedPost.tags} />
-        </div>
+        <input id="tag-change" type="text" onChange={this.onTagsChange} placeholder="update tags" value={this.state.updatedPost.tags} />
       );
     } else {
       return (
         <p className="blog-tags">{this.props.currentPost.tags}</p>
+      );
+    }
+  }
+
+  renderImage() {
+    if (this.state.isEditing) {
+      return (
+        <input id="cover-change" type="text" onChange={this.onImageChange} placeholder="update image" value={this.state.updatedPost.cover_url} />
+      );
+    } else {
+      return (
+        <img className="blog-cover" src={this.props.currentPost.cover_url} alt="Blog Cover" />
       );
     }
   }
@@ -150,10 +162,12 @@ class Post extends Component {
       <div className="blog-post">
         {this.renderEdit()}
         {this.renderDelete()}
-        <img src={this.props.currentPost.cover_url} alt="Blog Cover" />
-        {this.renderTitle()}
-        {this.renderContent()}
-        {this.renderTags()}
+        <div className="content">
+          {this.renderImage()}
+          {this.renderTitle()}
+          {this.renderContent()}
+          {this.renderTags()}
+        </div>
       </div>
     );
   }
