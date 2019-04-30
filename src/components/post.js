@@ -69,6 +69,7 @@ class Post extends Component {
         title: event.target.value,
       },
     });
+    this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
   }
 
   onContentChange(event) {
@@ -77,6 +78,7 @@ class Post extends Component {
         content: event.target.value,
       },
     });
+    this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
   }
 
   onTagsChange(event) {
@@ -85,6 +87,7 @@ class Post extends Component {
         tags: event.target.value,
       },
     });
+    this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
   }
 
   onImageChange(event) {
@@ -93,6 +96,7 @@ class Post extends Component {
         cover_url: event.target.value,
       },
     });
+    this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
   }
 
   renderTitle() {
