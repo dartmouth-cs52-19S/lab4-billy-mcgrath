@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://billy-lab5.herokuapp.com/';
+const ROOT_URL = 'http://localhost:9090/api';
 // const ROOT_URL = 'https://cs52-blog.herokuapp.com/api';
-const API_KEY = '?key=b_mcgrath';
+// const API_KEY = '?key=b_mcgrath';
 
 // keys for actiontypes
 export const ActionTypes = {
@@ -19,7 +19,7 @@ export function fetchPosts() {
   // that gets called with dispatch
   // remember (arg) => { } is a function
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts${API_KEY}`)
+    axios.get(`${ROOT_URL}/posts`)
       .then((response) => {
         // once we are done fetching we can dispatch a redux action with the response data
         dispatch({ type: ActionTypes.FETCH_POSTS, payload: response.data });
@@ -38,7 +38,7 @@ export function createPost(post, history) {
   const fields = {
     title: post.title, content: post.content, cover_url: post.cover_url, tags: post.tags,
   };
-  axios.post(`${ROOT_URL}/posts${API_KEY}`, fields)
+  axios.post(`${ROOT_URL}/posts`, fields)
     .then((response) => {
       history.push('/');
     });
@@ -50,7 +50,7 @@ export function updatePost(id, post) {
   };
 
   return (dispatch) => {
-    axios.put(`${ROOT_URL}/posts/${id}${API_KEY}`, fields)
+    axios.put(`${ROOT_URL}/posts/${id}`, fields)
       .then((response) => {
         // once we are done fetching we can dispatch a redux action with the response data
         dispatch({ type: ActionTypes.UPDATE_POST, payload: response.data });
@@ -67,7 +67,7 @@ export function updatePost(id, post) {
 
 export function fetchPost(id) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/posts/${id}${API_KEY}`)
+    axios.get(`${ROOT_URL}/posts/${id}`)
       .then((response) => {
         // once we are done fetching we can dispatch a redux action with the response data
         dispatch({ type: ActionTypes.FETCH_POST, payload: response.data });
@@ -83,8 +83,17 @@ export function fetchPost(id) {
 }
 
 export function deletePost(id, history) {
-  axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`)
-    .then((response) => {
-      history.push('/');
-    });
+  return (dispatch) => {
+    axios.delete(`${ROOT_URL}/posts/${id}`)
+      .then((response) => {
+        history.push('/');
+      })
+      .catch((error) => {
+      // whaaat?
+      // dispatch an error, use it in a separate error reducer. this is the beauty of redux.
+      // have an error component somewhere show it
+        dispatch({ type: ActionTypes.ERROR_SET, error });
+      // might you also want an ERROR_CLEAR action?
+      });
+  };
 }
