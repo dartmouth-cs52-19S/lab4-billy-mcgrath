@@ -30,6 +30,7 @@ class PostList extends Component {
               <img src={post.cover_url} alt="Blog Cover" />
               <h1 className="post-title">{post.title}</h1>
               <p className="post-tags">Tags: {post.tags}</p>
+              <p className="post-user">{post.username}</p>
             </NavLink>
           </div>
         );

@@ -31,7 +31,7 @@ body, html {
             }
 
             li {
-                a {
+                a, button {
                     display: flex;
                     align-items: center;
                     height: 40px;
@@ -44,7 +44,7 @@ body, html {
                     text-decoration: none;
                     color: white;
                 }
-                a:hover {
+                a:hover, button {
                     background-color: white;
                     color: black;
                 }

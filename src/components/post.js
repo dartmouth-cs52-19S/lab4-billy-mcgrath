@@ -26,6 +26,7 @@ class Post extends Component {
 
     this.renderEdit = this.renderEdit.bind(this);
     this.renderTitle = this.renderTitle.bind(this);
+    this.renderUser = this.renderUser.bind(this);
     this.renderContent = this.renderContent.bind(this);
     this.renderDelete = this.renderDelete.bind(this);
     this.renderTags = this.renderTags.bind(this);
@@ -106,8 +107,18 @@ class Post extends Component {
       );
     } else {
       return (
-        <h1 className="blog-title">{this.props.currentPost.title}</h1>
+        <div>
+          <h1 className="blog-title">{this.props.currentPost.title}</h1>
+        </div>
       );
+    }
+  }
+
+  renderUser() {
+    if (this.props.currentPost.username !== undefined) {
+      return (<p className="blog-content">by {this.props.currentPost.username}</p>);
+    } else {
+      return (<p className="blog-content">by Anonymous</p>);
     }
   }
 
@@ -161,7 +172,7 @@ class Post extends Component {
   }
 
   render() {
-    console.log(this.state.updatedPost);
+    console.log(this.props.currentPost);
     return (
       <div className="blog-post">
         {this.renderEdit()}
@@ -169,6 +180,7 @@ class Post extends Component {
         <div className="content">
           {this.renderImage()}
           {this.renderTitle()}
+          {this.renderUser()}
           {this.renderContent()}
           {this.renderTags()}
         </div>
