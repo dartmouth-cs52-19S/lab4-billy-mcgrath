@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://billy-lab5.herokuapp.com/api';
-// const ROOT_URL = 'http://localhost:9090/api';
+// const ROOT_URL = 'https://billy-lab5.herokuapp.com/api';
+export const ROOT_URL = 'http://localhost:9090/api';
 // const API_KEY = '?key=b_mcgrath';
 
 // keys for actiontypes
@@ -164,6 +164,7 @@ export function signupUser({ username, email, password }, history) {
         // whaaat?
         // dispatch an error, use it in a separate error reducer. this is the beauty of redux.
         // have an error component somewhere show it
+        history.push('/');
         dispatch(authError(`Sign Up Failed: ${error.response.data}`));
         // might you also want an ERROR_CLEAR action?
       });

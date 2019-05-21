@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createPost } from '../actions/index';
+import { uploadImage } from '../s3';
 
 class NewPost extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ class NewPost extends Component {
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onContentChange = this.onContentChange.bind(this);
     this.onTagsChange = this.onTagsChange.bind(this);
-    this.onCoverChange = this.onCoverChange.bind(this);
     this.onCreatePost = this.onCreatePost.bind(this);
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   onTitleChange(event) {
@@ -30,12 +31,27 @@ class NewPost extends Component {
     this.setState({ tags: event.target.value });
   }
 
-  onCoverChange(event) {
-    this.setState({ cover_url: event.target.value });
+  onImageUpload(event) {
+    const file = event.target.files[0];
+    // Handle null file
+    // Get url of the file and set it to the src of preview
+    if (file) {
+      this.setState({ preview: window.URL.createObjectURL(file), file });
+    }
   }
 
-  onCreatePost() {
-    createPost(this.state, this.props.history);
+  onCreatePost(history = this.props.history) {
+    if (this.state.file) {
+      uploadImage(this.state.file).then((url) => {
+        // use url for content_url and
+        // either run your createPost actionCreator
+        // or your updatePost actionCreator
+        this.setState({ cover_url: url });
+        createPost(this.state, this.props.history);
+      }).catch((error) => {
+        history.push('/');
+      });
+    }
 
     this.setState({
       title: '',
@@ -53,7 +69,8 @@ class NewPost extends Component {
           <input id="input-bar" type="text" onChange={this.onTitleChange} placeholder="new post title" value={this.state.title} />
           <input id="input-bar" type="text" onChange={this.onContentChange} placeholder="new post content" value={this.state.content} />
           <input id="input-bar" type="text" onChange={this.onTagsChange} placeholder="new post tags" value={this.state.tags} />
-          <input id="input-bar" type="text" onChange={this.onCoverChange} placeholder="new post cover url" value={this.state.cover_url} />
+          <img id="preview" alt="preview" src={this.state.preview} />
+          <input type="file" name="coverImage" onChange={this.onImageUpload} />
           <button id="submit-button" type="button" onClick={this.onCreatePost}>Create a post!</button>
         </form>
       </div>
