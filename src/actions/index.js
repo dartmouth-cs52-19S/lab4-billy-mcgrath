@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'https://billy-lab5.herokuapp.com/api';
+export const ROOT_URL = 'https://billy-lab5.herokuapp.com/api';
 // export const ROOT_URL = 'http://localhost:9090/api';
 // const API_KEY = '?key=b_mcgrath';
 
