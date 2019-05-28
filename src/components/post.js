@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import marked from 'marked';
 import { fetchPost, deletePost, updatePost } from '../actions/index';
-import { uploadImage } from '../s3';
 
 function mapStateToProps(reduxState) {
   return {
@@ -38,31 +37,15 @@ class Post extends Component {
     this.onImageChange = this.onImageChange.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
     this.onEditClick = this.onEditClick.bind(this);
-    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchPost(this.props.match.params.postID);
   }
 
-  onEditClick = (event, history = this.props.history) => {
+  onEditClick = (event) => {
     if (this.state.isEditing) {
-      if (this.state.file) {
-        uploadImage(this.state.file).then((url) => {
-          // use url for content_url and
-          // either run your createPost actionCreator
-          // or your updatePost actionCreator
-          this.setState({
-            updatedPost: {
-              cover_url: url,
-            },
-          });
-          this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
-        }).catch((error) => {
-          return error;
-        });
-      }
-
+      this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
       this.setState({ isEditing: false });
     } else {
       this.setState({
@@ -117,15 +100,6 @@ class Post extends Component {
     this.props.updatePost(this.props.currentPost._id, this.state.updatedPost);
   }
 
-  onImageUpload(event) {
-    const file = event.target.files[0];
-    // Handle null file
-    // Get url of the file and set it to the src of preview
-    if (file) {
-      this.setState({ preview: window.URL.createObjectURL(file), file });
-    }
-  }
-
   renderTitle() {
     if (this.state.isEditing) {
       return (
@@ -176,10 +150,7 @@ class Post extends Component {
   renderImage() {
     if (this.state.isEditing) {
       return (
-        <div>
-          <img id="preview" alt="preview" src={this.state.preview} />
-          <input type="file" name="coverImage" onChange={this.onImageUpload} />
-        </div>
+        <input id="cover-change" type="text" onChange={this.onImageChange} placeholder="update image" value={this.state.updatedPost.cover_url} />
       );
     } else {
       return (
